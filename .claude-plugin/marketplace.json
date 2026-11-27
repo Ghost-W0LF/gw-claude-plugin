@@ -1,0 +1,17 @@
+{
+  "name": "gw-claude-plugin",
+  "description": "Personal working rules and playbooks for Claude Code: changelogs, commits, project hygiene, and stack packs.",
+  "owner": { "name": "Ghost-W0LF" },
+  "plugins": [
+    {
+      "name": "playbook-core",
+      "source": "./plugins/playbook-core",
+      "description": "Stack-agnostic rules: per-module and app-level changelogs, Conventional Commits, project hygiene."
+    },
+    {
+      "name": "playbook-flutter-stacked",
+      "source": "./plugins/playbook-flutter-stacked",
+      "description": "Flutter + Stacked pack: strict MVVM architecture, UI conventions, per-layer commits."
+    }
+  ]
+}

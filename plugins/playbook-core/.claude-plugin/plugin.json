@@ -1,0 +1,6 @@
+{
+  "name": "playbook-core",
+  "version": "0.1.0",
+  "description": "Stack-agnostic working rules: per-module and app-level changelogs, Conventional Commits, project hygiene.",
+  "author": { "name": "Ghost-W0LF" }
+}
