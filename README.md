@@ -4,16 +4,9 @@ Reusable working rules for Claude Code, packaged as plugins. Install once in a n
 
 ## Quick start (run this first)
 
-Requires Claude Code and access to this private repo.
+Requires Claude Code. The repo is public, so no GitHub login or `gh` setup is needed.
 
-**1. One-time setup per machine** (Claude Code clones private repos with your existing git credentials):
-
-```bash
-gh auth login
-gh auth setup-git
-```
-
-**2. Add the marketplace and install the plugin.** Inside a Claude Code session in your project:
+**1. Add the marketplace and install the plugin.** Inside a Claude Code session in your project:
 
 ```
 /plugin marketplace add Ghost-W0LF/gw-claude-plugin
@@ -26,14 +19,14 @@ Flutter + Stacked project? Also install the Flutter pack:
 /plugin install playbook-flutter-stacked@gw-claude-plugin
 ```
 
-**3. Initialize the project:**
+**2. Initialize the project:**
 
 ```
 /playbook-core:init
 /playbook-flutter-stacked:init     # Flutter projects only
 ```
 
-**4. Check it worked:**
+**3. Check it worked:**
 - `/plugin` → Installed tab lists the plugin(s).
 - Start a new session; the core rules are injected automatically at session start.
 - `CLAUDE.md` now has a `playbook-core` block and `docs/CHANGELOG.md` exists.
@@ -85,7 +78,7 @@ claude plugin marketplace add ./path/to/gw-claude-plugin
 
 ## Troubleshooting
 
-- **"Failed to clone" / auth errors on a private repo:** run `gh auth login && gh auth setup-git`. `owner/repo` shorthand tries SSH first; if you have no GitHub SSH key, set `CLAUDE_CODE_PLUGIN_PREFER_HTTPS=1`. SSH keys must work without a passphrase prompt.
+- **"Failed to clone" / network errors:** `owner/repo` shorthand tries SSH first. If you have no GitHub SSH key, launch Claude Code with `CLAUDE_CODE_PLUGIN_PREFER_HTTPS=1` (set before it starts). If you later make the repo private again, you need a working git credential for github.com (`gh auth login && gh auth setup-git`, or any stored HTTPS credential).
 - **Plugin not found:** the part after `@` is the marketplace name (`gw-claude-plugin`), not the plugin name.
 - **Rules not showing in a session:** start a fresh session (the hook runs at session start); `claude --debug` shows hook output.
 - **Remove:** `claude plugin marketplace remove gw-claude-plugin`.
