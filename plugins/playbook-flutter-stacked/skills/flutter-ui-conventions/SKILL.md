@@ -13,4 +13,6 @@ description: UI conventions for Flutter apps with a shared design-token kit. Use
 - **Fonts**: bundle fonts in assets; no runtime font fetching.
 - **Maps and platform views**: keep platform views mounted (do not recreate on state changes) and avoid building them before the screen is needed, since native startup is costly.
 
+For templates, folder layouts and the widget-discovery checklist, see the `flutter-ui-component` skill.
+
 If the project documents its own tokens in `CLAUDE.md`, follow those names and values.
