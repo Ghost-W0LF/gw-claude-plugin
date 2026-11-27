@@ -1,42 +1,104 @@
 # gw-claude-plugin
 
-Reusable working rules for Claude Code, packaged as plugins so a new project needs one install instead of re-teaching Claude.
+Reusable working rules for Claude Code, packaged as plugins. Install once in a new project instead of re-teaching Claude the same rules every time.
 
-| Plugin | What it gives you |
-|---|---|
-| `playbook-core` | Per-module + app-level changelog rules, Conventional Commits, project hygiene; a SessionStart hook keeps the core rules always-on |
-| `playbook-flutter-stacked` | Strict MVVM + Stacked architecture, UI conventions, per-layer commits (opt-in) |
+## Quick start (run this first)
 
-## Install (private GitHub repo)
+Requires Claude Code and access to this private repo.
+
+**1. One-time setup per machine** (Claude Code clones private repos with your existing git credentials):
+
+```bash
+gh auth login
+gh auth setup-git
+```
+
+**2. Add the marketplace and install the plugin.** Inside a Claude Code session in your project:
 
 ```
-gh auth login && gh auth setup-git      # once per machine
 /plugin marketplace add Ghost-W0LF/gw-claude-plugin
 /plugin install playbook-core@gw-claude-plugin
-/plugin install playbook-flutter-stacked@gw-claude-plugin   # Flutter + Stacked projects only
 ```
 
-Then, in the new project:
+Flutter + Stacked project? Also install the Flutter pack:
 
 ```
-/playbook-core:init                     # CLAUDE.md block + docs/CHANGELOG.md
-/playbook-flutter-stacked:init          # Flutter projects only
+/plugin install playbook-flutter-stacked@gw-claude-plugin
 ```
 
-`init` is idempotent: re-running refreshes the marked blocks in `CLAUDE.md` and never duplicates them.
+**3. Initialize the project:**
+
+```
+/playbook-core:init
+/playbook-flutter-stacked:init     # Flutter projects only
+```
+
+**4. Check it worked:**
+- `/plugin` → Installed tab lists the plugin(s).
+- Start a new session; the core rules are injected automatically at session start.
+- `CLAUDE.md` now has a `playbook-core` block and `docs/CHANGELOG.md` exists.
+
+Done. From now on Claude follows the rules in this project without further teaching.
+
+## What you get
+
+| Plugin | Contents |
+|---|---|
+| `playbook-core` | Skills `changelog-upkeep`, `commit-conventions`, `project-hygiene`; a SessionStart hook that keeps the core rules always-on; `/playbook-core:init`; changelog templates |
+| `playbook-flutter-stacked` (opt-in) | Skills `flutter-stacked-architecture`, `flutter-ui-conventions`, `flutter-layer-commits`; `/playbook-flutter-stacked:init` |
+
+### The rules, in short
+
+- **Module changelogs:** every feature module has a `CHANGELOG.md` at its root, created with the module and updated in the same change as the code (files, current behavior, chronological changes, decisions, known gaps).
+- **App-level changelog:** a change touching more than one module also gets an entry in `docs/CHANGELOG.md`.
+- **Docs in step with code:** update `CLAUDE.md` (and any screens/flows doc) when flow, architecture, tech or routes change.
+- **Commits:** Conventional Commits, small logical commits, only when asked, never push unless asked, never commit secrets.
+- **Flutter pack:** strict MVVM (Service → Repository → ViewModel → View), `flutter_screenutil` sizing, color tokens only, reusable widgets in `base/widgets/`, one commit per architectural layer.
+
+## What `init` does
+
+`/playbook-core:init` is idempotent:
+1. Adds (or refreshes) a block between `<!-- playbook-core:start -->` and `<!-- playbook-core:end -->` in the project's `CLAUDE.md`. Nothing outside the markers is touched.
+2. Creates `docs/CHANGELOG.md` from the template if it doesn't exist.
+3. Lists existing modules that have no `CHANGELOG.md` and asks before creating starter ones.
+4. Never commits.
+
+`/playbook-flutter-stacked:init` does the same for the Flutter block (`<!-- playbook-flutter-stacked:start/end -->`) and tells you if your project's package name, color-token class or base widget folder differ from the defaults.
+
+Project-specific values (package name, folder names, token names) belong in the project's own `CLAUDE.md`; it wins over the plugin defaults.
 
 ## Updating the rules
 
-Edit files here, commit, push, then in any project: `/plugin marketplace update gw-claude-plugin`. Bump `version` in the plugin's `plugin.json` so installed copies update. Re-run `init` in a project to refresh its `CLAUDE.md` block.
+1. Edit files in this repo, bump `version` in the affected `plugin.json` (installed copies only update when it changes), commit and push.
+2. In each project: `/plugin marketplace update gw-claude-plugin`.
+3. Re-run `/playbook-core:init` to refresh the `CLAUDE.md` block.
+
+Third-party marketplaces have auto-update off by default; enable it under `/plugin` → Marketplaces if you want it.
+
+## Try changes locally before pushing
+
+```bash
+claude plugin validate .
+claude plugin validate plugins/playbook-core
+claude plugin marketplace add ./path/to/gw-claude-plugin
+```
+
+## Troubleshooting
+
+- **"Failed to clone" / auth errors on a private repo:** run `gh auth login && gh auth setup-git`. `owner/repo` shorthand tries SSH first; if you have no GitHub SSH key, set `CLAUDE_CODE_PLUGIN_PREFER_HTTPS=1`. SSH keys must work without a passphrase prompt.
+- **Plugin not found:** the part after `@` is the marketplace name (`gw-claude-plugin`), not the plugin name.
+- **Rules not showing in a session:** start a fresh session (the hook runs at session start); `claude --debug` shows hook output.
+- **Remove:** `claude plugin marketplace remove gw-claude-plugin`.
 
 ## Layout
 
 ```
 .claude-plugin/marketplace.json
-plugins/playbook-core/            skills/, commands/, hooks/, scripts/, context/, templates/
-plugins/playbook-flutter-stacked/ skills/, commands/, templates/
+plugins/
+  playbook-core/             skills/ commands/ hooks/ scripts/ context/ templates/
+  playbook-flutter-stacked/  skills/ commands/ templates/
 ```
 
 ## Adding a stack pack
 
-Copy `playbook-flutter-stacked`, rename it, replace the skills and `templates/CLAUDE.<stack>.md`, and add it to `.claude-plugin/marketplace.json`.
+Copy `plugins/playbook-flutter-stacked`, rename it, replace its skills and `templates/CLAUDE.<stack>.md`, update its `init` command markers, and add it to `.claude-plugin/marketplace.json`.
