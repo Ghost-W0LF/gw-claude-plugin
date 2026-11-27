@@ -37,8 +37,8 @@ Done. From now on Claude follows the rules in this project without further teach
 
 | Plugin | Contents |
 |---|---|
-| `playbook-core` | Skills `changelog-upkeep`, `commit-conventions`, `project-hygiene`; a SessionStart hook that keeps the core rules always-on; `/playbook-core:init` |
-| `playbook-flutter-stacked` (opt-in) | Skills `flutter-stacked-architecture`, `flutter-ui-conventions`, `flutter-layer-commits`; `/playbook-flutter-stacked:init` |
+| `playbook-core` | Skills `changelog-upkeep`, `commit-conventions`, `project-hygiene`, `grill-me`; a SessionStart hook that keeps the core rules always-on; `/playbook-core:init` |
+| `playbook-flutter-stacked` (opt-in) | Skills `flutter-stacked-architecture`, `flutter-ui-conventions`, `flutter-ui-component`, `flutter-layer-commits`; `/playbook-flutter-stacked:init` |
 
 ### The rules, in short
 
