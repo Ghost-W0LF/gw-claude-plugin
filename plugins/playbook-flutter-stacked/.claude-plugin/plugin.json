@@ -1,6 +1,6 @@
 {
   "name": "playbook-flutter-stacked",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Flutter + Stacked pack: strict MVVM architecture, UI conventions, per-layer commits.",
   "author": { "name": "Ghost-W0LF" }
 }

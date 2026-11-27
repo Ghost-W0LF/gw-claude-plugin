@@ -37,7 +37,7 @@ Done. From now on Claude follows the rules in this project without further teach
 
 | Plugin | Contents |
 |---|---|
-| `playbook-core` | Skills `changelog-upkeep`, `commit-conventions`, `project-hygiene`; a SessionStart hook that keeps the core rules always-on; `/playbook-core:init`; changelog templates |
+| `playbook-core` | Skills `changelog-upkeep`, `commit-conventions`, `project-hygiene`; a SessionStart hook that keeps the core rules always-on; `/playbook-core:init` |
 | `playbook-flutter-stacked` (opt-in) | Skills `flutter-stacked-architecture`, `flutter-ui-conventions`, `flutter-layer-commits`; `/playbook-flutter-stacked:init` |
 
 ### The rules, in short
@@ -88,10 +88,10 @@ claude plugin marketplace add ./path/to/gw-claude-plugin
 ```
 .claude-plugin/marketplace.json
 plugins/
-  playbook-core/             skills/ commands/ hooks/ scripts/ context/ templates/
-  playbook-flutter-stacked/  skills/ commands/ templates/
+  playbook-core/             skills/ commands/ hooks/ scripts/ context/
+  playbook-flutter-stacked/  skills/ commands/
 ```
 
 ## Adding a stack pack
 
-Copy `plugins/playbook-flutter-stacked`, rename it, replace its skills and `templates/CLAUDE.<stack>.md`, update its `init` command markers, and add it to `.claude-plugin/marketplace.json`.
+Copy `plugins/playbook-flutter-stacked`, rename it, replace its skills, update its `init` command (it embeds the CLAUDE.md block and markers), and add it to `.claude-plugin/marketplace.json`.
